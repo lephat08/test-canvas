@@ -1,0 +1,41 @@
+version: '3.1'
+services:
+  canvas_lms: &BASE
+    build: .
+    image: jamehunt08/canvas-demo:v12
+    container_name: canvas_lms
+    restart: always
+    ports:
+      - 3000:3000
+    volumes: &BASE-VOL
+      - ./assets/domain.yml:/opt/canvas/canvas-lms/config/domain.yml
+      - ./assets/security.yml:/opt/canvas/canvas-lms/config/security.yml
+      - ./assets/dynamic_settings.yml:/opt/canvas/canvas-lms/config/dynamic_settings.yml
+    depends_on:
+      - canvas_redis
+
+  canvas_redis:
+    image: redis:alpine
+    container_name: canvas_redis
+    hostname: redis
+    restart: always
+
+  
+  redis-commander:
+    container_name: canvas_redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+    - REDIS_HOSTS=local:redis:6379
+    ports:
+    - "8081:8081"
+
+
+volumes:
+  canvas_db:
+
+networks:
+  default:
+    external:
+        name: staging-net

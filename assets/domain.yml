@@ -1,0 +1,7 @@
+production:
+  domain: "canvas.drimaesvn.com"
+  ssl: true
+ 
+development:
+  domain: "localhost:3000"
+  # ssl: true 
