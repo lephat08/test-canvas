@@ -1,5 +1,5 @@
 production:
-  domain: "canvas.drimaesvn.com"
+  domain: "canvas.docker:3000"
   ssl: true
  
 development:

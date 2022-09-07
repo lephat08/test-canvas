@@ -1,0 +1,69 @@
+version: '3.1'
+services:
+  canvas_lms: &BASE
+    # build: .
+    image: jamehunt08/canvas-demo:dev
+    container_name: canvas_lms
+    restart: always
+    ports:
+      - 3000:3000
+    environment: &BASE-ENV
+      CANVAS_LMS_ADMIN_EMAIL: admin@mail.local
+      CANVAS_LMS_ADMIN_PASSWORD: password
+      CANVAS_LMS_ACCOUNT_NAME: Root
+      CANVAS_LMS_STATS_COLLECTION: opt_out
+    volumes: &BASE-VOL
+      - ./assets/domain.yml:/opt/canvas/canvas-lms/config/domain.yml
+      - ./assets/security.yml:/opt/canvas/canvas-lms/config/security.yml
+      - ./assets/dynamic_settings.yml:/opt/canvas/canvas-lms/config/dynamic_settings.yml
+      - ./assets/database.yml:/opt/canvas/canvas-lms/config/database.yml
+      - ./assets/redis.yml:/opt/canvas/canvas-lms/config/redis.yml
+      - ./assets/cache_store.yml:/opt/canvas/canvas-lms/config/cache_store.yml
+
+    depends_on:
+      - canvas_db_1
+      - canvas_redis
+
+  canvas_db_1:
+    image: postgres:12
+    container_name: canvas_db_1
+    restart: always
+    environment:
+      POSTGRES_DB: canvas_development
+      POSTGRES_USER: canvas
+      POSTGRES_PASSWORD: example
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - canvas_db:/var/lib/postgresql/data/pgdata
+
+  canvas_redis:
+    image: redis:alpine
+    container_name: canvas_redis
+    hostname: redis
+    restart: always
+
+  
+  redis-commander:
+    container_name: canvas_redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+    - REDIS_HOSTS=local:redis:6379
+    ports:
+    - "8081:8081"
+
+  canvas_adminer:
+    image: adminer
+    container_name: canvas_adminer_1
+    restart: always
+    ports: 
+      - 8080:8080
+
+volumes:
+  canvas_db:
+
+networks:
+  default:
+    external:
+        name: staging-net

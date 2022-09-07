@@ -20,9 +20,9 @@ This repo is [registered](https://registry.hub.docker.com/u/lbjay/canvas-docker/
 ## Building
 
 1. Clone this repo somewhere. 
-2. Build the image: `docker build -t canvas-docker .`
+2. Run docker-compose: `docker build -t canvas-docker .`
 3. Start the container: `docker run -t -i -p 3000:3000 --name canvas-docker canvas-docker`
-4. Point your browser to [http://localhost:3000](http://localhost:3000). The admin user/pass login is `canvas@example.edu` / `canvas-docker`.
+4. Point your browser to [http://localhost:3000](http://localhost:3000). The admin user/pass login is `admin@mail.local` / `password`.
 
 ## The "fat" container
 

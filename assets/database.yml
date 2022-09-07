@@ -12,16 +12,36 @@ login: &login
   timeout: 5000
   username: "canvas"
 
-development:
-  <<: *login
-  database: canvas_development
-  queue:
-    <<: *login
-    database: canvas_queue_development
+# development:
+#   <<: *login
+#   database: canvas_development
+#   queue:
+#     <<: *login
+#     database: canvas_queue_development
 
+development:
+  adapter: postgresql
+  encoding: utf8
+  database: canvas_development
+  host: canvas_db_1
+  username: canvas
+  password: example
+  timeout: 5000
+  # secondary:
+  #   replica: true
+  #   username: canvas
+
+# production:
+#   <<: *login
+#   database: canvas_production
+#   queue:
+#     <<: *login
+#     database: canvas_queue_production
 production:
-  <<: *login
+  adapter: postgresql
+  encoding: utf8
   database: canvas_production
-  queue:
-    <<: *login
-    database: canvas_queue_production
+  host: canvas_db_1
+  username: canvas
+  password: example
+  timeout: 5000
